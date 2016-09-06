@@ -1,4 +1,4 @@
-public class Person {
+public class Person extends Printable{
 	protected int age;
 	protected String name;
 	protected double height;
@@ -13,16 +13,8 @@ public class Person {
 	}
 
 
-	
-	private String getInfo(){
+	@Override
+	public String getInfo(){
 		return "Name,Age,Height: {"+name+","+age+","+height;
 	}
-	
-	
-	public String toString(){
-		return this.getInfo();
-	
-	}
-
 }
-

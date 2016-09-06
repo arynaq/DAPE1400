@@ -8,14 +8,9 @@ public class Student extends Person{
 	}
 
 
-	
-	private String getInfo(){
-		return ", examscore: "+examScore;
+	@Override
+	public String getInfo(){
+		return super.getInfo()+", examscore: "+examScore;
 	}
 
-
-	
-	public String toString(){
-		return this.getInfo();
-	}
 }

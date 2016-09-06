@@ -1,4 +1,4 @@
-public class ChemicalElement {
+public class ChemicalElement extends Printable{
 	
 	private int atomicNr;
 	private String symbol;
@@ -15,15 +15,10 @@ public class ChemicalElement {
 	}
 
 
-	 
-	private String getInfo(){
+	@Override 
+	public String getInfo(){
 		return "{N: "+atomicNr+", Symbol: "+symbol+", Group: "+group+", Period: "+period+"}";
 	}
 
-	
 
-	
-	public String toString(){
-		return this.getInfo();
-	}
 }

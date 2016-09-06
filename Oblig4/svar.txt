@@ -28,4 +28,10 @@ liknende generalisering/forklaring for abstrakte metoder.
 		A dog cannot climb.
 
 
-		
+#Hva returnerer toString dersom den ikke overrides?
+
+	Object klassens toString metode
+	Hexrepresentasjon av objektets hashCode
+	Som vanligvis er dens adresse
+
+

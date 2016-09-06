@@ -8,14 +8,9 @@ public class Lecturer extends Person{
 	}
 
 	
-	
-	private String getInfo(){
-		return  " salary: "+salary;
+	@Override
+	public String getInfo(){
+		return super.getInfo() + " salary: "+salary;
 	}
 
-
-	
-	public String toString(){
-		return this.getInfo();
-	}
 }
