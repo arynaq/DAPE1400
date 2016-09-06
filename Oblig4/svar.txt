@@ -35,3 +35,12 @@ liknende generalisering/forklaring for abstrakte metoder.
 	Som vanligvis er dens adresse
 
 
+#Sammenhengen mellom abstract og interface
+
+	Abstract 
+		Kan gi implementasjoner av visse metoder. Brukes når metoder er felles over alle klasser som skal arve.
+	Interface
+		Ekte polymorphisme, her kan man arve fra så mange interfaces som man vil
+		Interfacen gir en kontrakt på oppførsel men ingen implementasjon.
+		
+
