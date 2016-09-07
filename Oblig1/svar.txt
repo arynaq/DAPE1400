@@ -1,0 +1,37 @@
+#Oppgave 2.1
+	Instruksjoner 1:
+		1:  = 2
+		3: 4-2 = 2
+#Oppgave 2.2
+	Typen til b er ikke definert. Compile-time error.
+
+#Oppgave 2.3
+	Siden variabelen a er av typen char så vil vi få ut bokstaven b.
+
+#Oppgave 3.1
+	If true evaluerer alltid til sant da true er en boolean literal i java med verdi 1/true.
+	Da vil utskriften tyde "Melding 2".
+
+	"Hei, DAPE1400/ITPE14"
+
+#Oppgave 3.1.3
+
+	b1 evaluerer true
+	b2 evaluerer false
+	b3 evaluerer false
+
+	"true" -> "false" -> "false" blir utskriften
+
+#Oppgave 4.1
+	p returnerer 2, altså får vi 2
+
+#Oppgave 4.2
+	True, se kode
+
+#Oppgave 4.3
+	a sin signatur sier at methoden har returtype void (egentlig ikke en type, java har ikke void datatype)
+	som vil si at funksjonen returnerer ingenting. Assigne en int til dette går dårlig.
+	Compiletime Error.
+
+
+
