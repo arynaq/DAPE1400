@@ -1,0 +1,31 @@
+#Hvorfor kan vi ikke lage objekter av typen Person? Hvorfor kan dette være en fordel?
+	
+	Kan være en fordel når vi ønsker et skjellet for objekter.
+	En "Animal" gir ikke mening men det gir mening at alle dyr har noe fellestrekk.
+	Da slipper vi å reimplementere alle disse på nytt.
+
+#Hva er betingelsen for at en klasse skal være abstrakt?
+	
+	Minst en metode må være abstrakt.
+	Dette gjelder om den arver eller ikke fra en abstrakt klasse.
+
+#Hva må gjøres i subklasser av Person for å gjøre subklassen konkret?
+
+	getInfo() må få en konkret implementasjon
+
+# Vi har sett bruken av er-en (arv) og har-en (bruk av klasse i en annen klasse). Kom opp med en
+liknende generalisering/forklaring for abstrakte metoder.
+
+	Generalisering:
+
+		Hmm vanskelig å sette ord på dette. Abstrakte klasser gjør jo absolutt bruk av arv
+		Men deres store fordel er kanskje at ikke alt trenger å arves.
+
+
+		A dog is a kenine.
+		Any kenine is an animal.
+		An animal MAY climb.
+		A dog cannot climb.
+
+
+		

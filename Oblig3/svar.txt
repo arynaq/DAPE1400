@@ -57,4 +57,8 @@ relasjoner.
 
 	Vel oppgaven ga vekk svaret. Fordelen er at den nettop gir compiletime error hvis den ikke overkjører en metode
 
-	
+
+#Test()
+	x i B:
+		super.x
+			
