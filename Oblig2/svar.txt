@@ -1,1 +1,29 @@
-#Oblig 2
+#Oppgave 7.1.1
+
+	int i = 5;
+		Klasse: Ingen
+		Objekt: Ingen
+		Referanse: Ingen
+		Variabel: i
+		Verdi: 5
+
+	String s = new String("Hello");	
+		Klasse: String
+		Objekt: new String
+		Referanse: s
+		Variabel: s
+		Verdi: "Hello"..men det er ikke helt riktig,
+		 	to stringer med samme verdi kan få 2 forskjellige hashs..
+#Oppgave 7.1.2
+
+	Skriver ut 5 naturligvis til konsollen. Public variabel til MinKlasse
+
+#Oppgave 7.1.3
+
+	Ett objekt, str2 er en referanse/variabel, "innholdet" er objektet som begge peker på.
+
+
+
+	
+
+

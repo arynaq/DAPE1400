@@ -1,0 +1,60 @@
+#Age og name er satt til public. Hvorfor får ikke Student klassen tilgang på disse medlemmene,
+hvis medlemmene hadde vært satt til private, selv om den arver fra Person?
+
+	Private er an accessmodifier som ikke gir tilgang til noen andre enn instanser av selve klassen.
+
+
+#Hvorfor kan vi, ut ifra UML diagrammet, si at en student er en person? Hvorfor kan vi si at en
+lærer har et navn? Hvorfor kan vi ikke si at en student har en lønn? Generaliser er-en og har-en
+relasjoner.
+	
+	Student er en Person fordi den er en utvidelse av Person. En bil er et fartøy.
+	Mer konkret, en Student inneholder alt som trengs for å lage en Person (og må dessuten implementere konstruktører)
+
+
+	Student har ikke en lønn fordi det er en egenskap (verdi) som kun type Lecturer har.
+	
+	
+	Generalisering:
+		Er: Inneholder på det minste det som trengs for å lage det den skal være
+		Har: Inneholder en egenskap.
+
+
+#Widening og Narrowing
+
+	Widening:
+		Konvertering fra S til T er muling så lenge S er en subtype av T (per definisjon).
+	
+			Object o = new String();
+
+	Narrowing:
+		Konverting fra S til T er mulig så lenge S er en ekte supertype av T.
+
+			Animal c = new Cat();
+
+			Cat pus = (Cat) c;
+
+		Dette er lov (kompilerer) per definisjonen men checken er runtime (pga interfaces og dynamiske typer)
+		og man kan få ClassCastException hvis instanceof er false.
+
+
+#Beskriv forskjellen mellom private, public, og protected.
+
+	Private:
+		Aksessering er ikke mulig for noen andre enn direkte objekter av selve klassen.
+	Protected:
+		(Package-Protected)
+		Aksessering er mulig for alle andre klasse i samme pakke.
+	Public:
+		GG WP
+
+#Beskriv sammenhengen mellom protected og package
+
+	Protected er ikke kun for direkte arvinger, alle i samme pakke ser felt/metoder som er protected.
+
+
+#@Override
+
+	Vel oppgaven ga vekk svaret. Fordelen er at den nettop gir compiletime error hvis den ikke overkjører en metode
+
+	
