@@ -1,0 +1,4 @@
+#Immediate Mode
+
+	# Datapoints are added with (x,y) points to this class
+	# Datapoints 
