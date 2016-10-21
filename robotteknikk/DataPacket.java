@@ -5,6 +5,13 @@ public class DataPacket {
 	private Data data;
 
 
+	public DataPacket(String state, Tool tool, Data data) {
+		this.state = state;
+		this.tool = tool;
+		this.data = data;
+	}
+
+
 	public void setState(String state){
 		this.state = state;
 	}
@@ -19,6 +26,12 @@ public class DataPacket {
 
 	public Data getData(){
 		return this.data;
+	}
+
+
+	public String toJSON(){
+		return null;
+
 	}
 
 }

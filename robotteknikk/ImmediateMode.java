@@ -6,21 +6,35 @@ import javafx.geometry.Point2D;
 
 public class ImmediateMode {
 
+
+
+	/**
+	 * This is the main controllre class for immediate mode
+	 * 
+	 *
+	 * */
+
+	private String state; 
 	private Tool tool;
+	private Data data;
 	private TCPController tcp;
-	private DataPacket datapacket;
 
 
-	public void setTool(Tool tool){
-		this.tool = tool;
+	public ImmediateMode(){
+		this.state = "Immediate";
+		this.tool = null;
+		this.data = new Data();
 	}
 
-	public void addpoint(double x, double y) {
-		datapacket.getData().addPoint(x,y);
+
+	public void addPoint(double x, double y){
+		this.data.addPoint(x,y);
 	}
 
-	public void flushToTCP(DataPacket datapacket){
-		tcp.send(datapacket);
+	public void sendTCP(){
+		tcp.send(state, tool, data);
 	}
+
+
 
 }
