@@ -3,18 +3,38 @@ import java.net.*;
 import java.io.*;
 
 
+
 public class TCPController implements Runnable{
 	private int runningIndex  = 0;
-	private static final int maxDataSize = 100;
-	private String hostname;
+	private int maxDataSize = 100;
+	private int updateRate = 50;
 	private int port;
+
+	private String hostname;
 	private Socket socket;
 	private DataInputStream in;
 	private DataOutputStream out;
 
+	private boolean connected;
+
 	public TCPController(String hostname, int port) {
 		this.hostname = hostname;
 		this.port = port;
+	}
+
+	public void setUpdateRate(int rate){
+		this.updateRate = rate;
+	}
+
+
+	public void setMaxDataSize(int max){
+		this.maxDataSize = max;
+	}
+
+	public void connect(){
+		if(connected)
+			return;
+		setupSocket();
 	}
 
 	private void setupSocket(){
@@ -22,7 +42,7 @@ public class TCPController implements Runnable{
 			socket = new Socket(hostname, port);
 			out = new DataOutputStream(socket.getOutputStream());;
 			in = new DataInputStream(socket.getInputStream());
-
+			connected = true;
 		}catch(IOException e){
 			System.out.println("Failed at initiating socket");
 		}
@@ -90,11 +110,13 @@ public class TCPController implements Runnable{
 
 			
 
-			out.writeUTF(new DataPacket(state, tool, data).toJSON());
+			try{
+				out.writeUTF(new DataPacket(state, tool, data).toJSON());
+			} catch(IOException e) {
+				System.out.println("Failed to write datapacket");
+			}
 			writeToSocket(state,tool, new Data(remainder));
 		}
 
 	}
-
-
 }

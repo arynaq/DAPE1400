@@ -16,6 +16,13 @@ public class Data {
 		this.data = data;
 	}
 
+	/**
+	 *
+	 * Default constructor, does nothing..yet
+	 * */
+	public Data(){
+	}
+
 
 	public DataPoint getLastDataPoint(){
 		return data.get(data.size()- 1);

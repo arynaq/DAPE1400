@@ -29,9 +29,49 @@ public class DataPacket {
 	}
 
 
-	public String toJSON(){
-		return null;
+	/**
+	 * This will produce the following example JSON file
+	 *
+	 * {
+	 * 	State: <String>,
+	 * 	Tool:<Object>
+	 * 		{
+	 * 			Color : <String>, 
+	 * 			Style : <String>,
+	 * 			Resolution: <String>
+	 * 		},
+	 * 	Data: <array>
+	 * 		[{x,y},
+	 * 		 {x,y},
+	 * 		 ....
+	 * 		 ]
+	 * }
+	 * 	
+	 * By calling the .toJSON() method of each object.
+	 *
+	 *
+	 * @return Returns the datapacket outlined above.
+	 * */
 
+
+	public String toJSON(){
+		StringBuffer buffer = new StringBuffer();
+
+		buffer.append("{");
+		
+		buffer.append("State: " + state);
+		buffer.append(",");
+		
+		buffer.append("Tool: ");
+		buffer.append(tool.toJSON());
+		buffer.append(",");
+
+		buffer.append("Data: ");
+		buffer.append(data.toJSON());
+		
+		buffer.append("}");
+
+		return buffer.toString();
 	}
 
 }
