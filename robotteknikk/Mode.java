@@ -38,12 +38,20 @@ public abstract class Mode {
 		this.tool = tool;
 	}
 
+	public Tool getTool(){
+		return this.tool;
+	}
+
 	public void setData(Data data){
 		this.data = data;
 	}
 	
 	public void setTCPController(TCPController tcp){
 		this.tcp = tcp;
+	}
+
+	public Data getData(){
+		return this.data;
 	}
 
 

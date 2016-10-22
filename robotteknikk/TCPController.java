@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.ArrayList;
 import java.net.*;
 import java.io.*;
 
@@ -6,8 +7,7 @@ import java.io.*;
 
 public class TCPController implements Runnable{
 	private int runningIndex  = 0;
-	private int maxDataSize = 100;
-	private int updateRate = 50;
+	private int maxDataSize = 50;
 	private int port;
 
 	private String hostname;
@@ -21,12 +21,6 @@ public class TCPController implements Runnable{
 		this.hostname = hostname;
 		this.port = port;
 	}
-
-	public void setUpdateRate(int rate){
-		this.updateRate = rate;
-	}
-
-
 	public void setMaxDataSize(int max){
 		this.maxDataSize = max;
 	}
@@ -35,6 +29,10 @@ public class TCPController implements Runnable{
 		if(connected)
 			return;
 		setupSocket();
+	}
+
+	public boolean isConnected(){
+		return connected;
 	}
 
 	private void setupSocket(){
@@ -63,15 +61,10 @@ public class TCPController implements Runnable{
 
 
 	/**
-	 * This method is the main method to be called from external controllers.
+	 * This method will take a copy of the data to be sent before sending it over TCP.
 	 *
-	 * The method works under the assumption that the list of datapoints from the Data
-	 * object is continiously growing (and only refreshed in the sense that it is extended
-	 * in size when a new datapoint is added). 
-	 *
-	 * Keeps a running inded of what it has already sent so as to not send duplicates.
-	 *
-	 * 
+	 * Will try to send it all in one go if the number of datapoints fit in one datapacket
+	 * else it will attempt to split up in fitting chunks. 
 	 *
 	 * @param state The state variable to write in datapacket to server 
 	 * @param tool  The tool variable to write in datapacket to server.
@@ -79,7 +72,7 @@ public class TCPController implements Runnable{
 	 *
 	 */
 	public void send(String state, Tool tool, Data data){
-		List<DataPoint> asList = data.asList();
+		List<DataPoint> asList = new ArrayList<DataPoint>(data.asList());
 		
 		asList = asList.subList(runningIndex, asList.size());
 		writeToSocket(state, tool, new Data(asList));
@@ -104,7 +97,8 @@ public class TCPController implements Runnable{
 
 
 		if(N> maxDataSize) {
-			// Send mxaDataSize datapoints first.
+			// Split into a part we can send now and a remainder we can send afterwards
+			// this will run recursively untill all data has been sent.
 			toSend = asList.subList(0, maxDataSize);
 			remainder = asList.subList(maxDataSize, N);
 
@@ -117,6 +111,16 @@ public class TCPController implements Runnable{
 			}
 			writeToSocket(state,tool, new Data(remainder));
 		}
+		// if it actually fits, send now!
+		else {
+			try {
+				out.writeUTF(new DataPacket(state,tool, data).toJSON());
+			}catch(IOException e){
+				System.out.println("Failed to write datapacket");
+			}
+		}
+
+
 
 	}
 }

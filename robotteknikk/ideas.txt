@@ -2,3 +2,20 @@
 
 	# Datapoints are added with (x,y) points to this class
 	# Datapoints 
+
+
+
+#PROBLEMS
+
+
+	# In immediatemode the TCP controller must send data not asap but in bursts of datapoints
+	# The TCP controller must be threaded
+
+		# Problem: The superclass TCP controller has a send method that gives 0 shits about bursts 
+
+		# Solution:
+
+			ImmediateMode implements a task that runs periodically
+
+			Problem:
+				Ugly, but there are dependency issues here...		
