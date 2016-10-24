@@ -5,7 +5,7 @@ import java.io.*;
 
 
 
-public class TCPController implements Runnable{
+public class TCPController{
 	private int runningIndex  = 0;
 	private int maxDataSize = 50;
 	private int port;
@@ -47,19 +47,6 @@ public class TCPController implements Runnable{
 	}
 
 
-	/***
-	 * This does NOTHING as of yet.
-	 * The idea is to get this to run in a scheduled periodic class
-	 *
-	 *
-	 * */
-	@Override
-	public void run(){
-
-	}
-
-
-
 	/**
 	 * This method will take a copy of the data to be sent before sending it over TCP.
 	 *
@@ -72,6 +59,7 @@ public class TCPController implements Runnable{
 	 *
 	 */
 	public void send(String state, Tool tool, Data data){
+		System.out.println("In super send.");
 		List<DataPoint> asList = new ArrayList<DataPoint>(data.asList());
 		
 		asList = asList.subList(runningIndex, asList.size());

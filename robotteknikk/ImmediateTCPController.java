@@ -37,7 +37,7 @@ import java.util.concurrent.*;
  * */
 
 
-public class ImmediateTCPController extends TCPController{
+public class ImmediateTCPController extends TCPController implements Runnable{
 
 	private ImmediateMode container;
 	private boolean sending;
@@ -54,7 +54,9 @@ public class ImmediateTCPController extends TCPController{
 
 	@Override
 	public void run(){
+		System.out.println("HELLO!");
 		sending = true;
+		System.out.println("Hello!");
 		super.send(container.getState(), container.getTool(), container.getData());
 	}
 
