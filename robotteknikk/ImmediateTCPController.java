@@ -54,9 +54,8 @@ public class ImmediateTCPController extends TCPController implements Runnable{
 
 	@Override
 	public void run(){
-		System.out.println("HELLO!");
+		System.out.println("In ImmediateTCPController, run");
 		sending = true;
-		System.out.println("Hello!");
 		super.send(container.getState(), container.getTool(), container.getData());
 	}
 

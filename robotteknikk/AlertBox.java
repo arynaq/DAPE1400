@@ -17,6 +17,7 @@ public class AlertBox{
 	private GridPane pane;
 	private Label label;
 	private TextArea textArea;
+	private String labelText;
 
 
 	public AlertBox(Exception e){
@@ -30,9 +31,11 @@ public class AlertBox{
 
 	}
 
-	public AlertBox(String error){
-
+	public AlertBox(Exception e, String text){
+		this(e);
+		this.labelText = text;
 	}
+
 
 	private void setupAndShow(Exception e){
 

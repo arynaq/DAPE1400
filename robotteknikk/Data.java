@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class Data {
 
 	private List<DataPoint> data = new ArrayList<>();
+	private static final String empty = "[]";
 
 	public void addPoint(double x, double y) {
 		data.add(new DataPoint(x,y));
@@ -39,6 +40,11 @@ public class Data {
 	}
 
 	public String toJSON(){
+		System.out.println(data.size());
+		if(data.isEmpty())
+			return empty;
+
+
 		StringBuffer buffer = new StringBuffer();
 		
 		buffer.append("[");

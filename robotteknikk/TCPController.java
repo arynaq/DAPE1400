@@ -36,6 +36,7 @@ public class TCPController{
 	}
 
 	private void setupSocket(){
+		System.out.println("Setting up socket..");
 		try {
 			socket = new Socket(hostname, port);
 			out = new DataOutputStream(socket.getOutputStream());;
@@ -59,6 +60,7 @@ public class TCPController{
 	 *
 	 */
 	public void send(String state, Tool tool, Data data){
+		System.out.println("Runningindex before send: " + runningIndex);
 		System.out.println("In super send.");
 		List<DataPoint> asList = new ArrayList<DataPoint>(data.asList());
 		
@@ -66,6 +68,7 @@ public class TCPController{
 		writeToSocket(state, tool, new Data(asList));
 
 		runningIndex = asList.size();
+		System.out.println("Runningindex after send: " + runningIndex);
 	}
 
 
@@ -78,6 +81,7 @@ public class TCPController{
 	 *
 	 * */
 	private void writeToSocket(String state, Tool tool, Data data){
+		System.out.println("In write to socket...");
 		List<DataPoint> asList = data.asList();
 		List<DataPoint> toSend = null;
 		List<DataPoint> remainder = null;
@@ -93,7 +97,7 @@ public class TCPController{
 			
 
 			try{
-				out.writeUTF(new DataPacket(state, tool, data).toJSON());
+				out.writeChars(new DataPacket(state, tool, data).toJSON());
 			} catch(IOException e) {
 				System.out.println("Failed to write datapacket");
 			}
@@ -101,11 +105,13 @@ public class TCPController{
 		}
 		// if it actually fits, send now!
 		else {
+			System.out.println("In directsend..");
 			try {
 				out.writeUTF(new DataPacket(state,tool, data).toJSON());
 			}catch(IOException e){
 				System.out.println("Failed to write datapacket");
 			}
+			System.out.println("Sent!");
 		}
 
 

@@ -1,5 +1,4 @@
 public class DataPacket {
-
 	private String state;
 	private Tool tool;
 	private Data data;
