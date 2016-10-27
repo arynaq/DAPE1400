@@ -63,12 +63,13 @@ public class TCPController{
 	public void send(String state, Tool tool, Data data){
 		System.out.println(this+ " sendcount: "+callCount++);
 		System.out.println("Runningindex before send: " + runningIndex);
-		List<DataPoint> asList = new ArrayList<DataPoint>(data.asList());
-		
-		asList = asList.subList(runningIndex, asList.size());
-		writeToSocket(state, tool, new Data(asList));
+		List<DataPoint> dataPoints = data.asList();
+		List<DataPoint> dataCopy = new ArrayList<DataPoint>(dataPoints);
+		List<DataPoint> toSend = dataCopy.subList(runningIndex, dataCopy.size());
 
-		runningIndex = asList.size();
+		
+		writeToSocket(state, tool, new Data(toSend));
+		runningIndex = dataPoints.size();
 		System.out.println("Runningindex after send: " + runningIndex);
 	}
 
