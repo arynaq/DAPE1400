@@ -9,6 +9,7 @@ public class TCPController{
 	private int runningIndex  = 0;
 	private int maxDataSize = 50;
 	private int port;
+	private int callCount = 0;
 
 	private String hostname;
 	private Socket socket;
@@ -60,8 +61,8 @@ public class TCPController{
 	 *
 	 */
 	public void send(String state, Tool tool, Data data){
+		System.out.println(this+ " sendcount: "+callCount++);
 		System.out.println("Runningindex before send: " + runningIndex);
-		System.out.println("In super send.");
 		List<DataPoint> asList = new ArrayList<DataPoint>(data.asList());
 		
 		asList = asList.subList(runningIndex, asList.size());
