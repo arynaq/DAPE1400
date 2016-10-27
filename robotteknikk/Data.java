@@ -10,6 +10,10 @@ public class Data {
 		data.add(new DataPoint(x,y));
 	}
 
+	public void addPoint(double x, double y, double z){
+		data.add(new DataPoint(x,y,z));
+	}
+
 	/**
 	 * Copy constructor
 	 * */

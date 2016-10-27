@@ -4,8 +4,6 @@ public class Tool {
 	private String resolution;
 
 
-
-
 	public Tool(String color, String style, String resolution){
 		this.color = color;
 		this.style = style;
@@ -33,4 +31,9 @@ public class Tool {
 
 		return buffer.toString();
 	}
+
+	public void setColor(String color){
+		this.color = color;
+	}
+
 }

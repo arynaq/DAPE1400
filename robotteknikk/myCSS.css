@@ -1,0 +1,107 @@
+#drawBar {
+    -fx-background-color: #3c3f41;
+    -fx-border-color: black;
+}
+
+#blueButton{
+	  -fx-background-color: #000000,
+					linear-gradient(#7ebcea, #2f4b8f),
+					linear-gradient(#426ab7, #263e75),
+					linear-gradient(#395cab, #223768);
+		-fx-background-insets: 0,1,2,3;
+		-fx-background-radius: 3,2,2,2;
+		-fx-padding: 12 30 12 30;
+		-fx-text-fill: white;
+		-fx-font-size: 12px;
+}
+
+#redButton{
+
+	  -fx-background-color: #000000,
+					linear-gradient(#a90329, #8f0222),
+					linear-gradient(#6d0019, #f00000),
+					linear-gradient(#a90329, #8f0222);
+		-fx-background-insets: 0,1,2,3;
+		-fx-background-radius: 3,2,2,2;
+		-fx-padding: 12 30 12 30;
+		-fx-text-fill: white;
+		-fx-font-size: 12px;
+}
+
+
+#blackButton{
+	  -fx-background-color: #000000,
+					linear-gradient(#191c21, #000000),
+					linear-gradient(#000307, #000000),
+					linear-gradient(#000000, #000000);
+		-fx-background-insets: 0,1,2,3;
+		-fx-background-radius: 3,2,2,2;
+		-fx-padding: 12 30 12 30;
+		-fx-text-fill: white;
+		-fx-font-size: 12px;
+}
+
+#rightBar{
+    -fx-background-color: #3c3f41;
+    -fx-border-color: black;
+}
+
+#rightBar .label{
+    -fx-text-fill: aliceblue;
+}
+
+#ipBar {
+    -fx-background-color: #3c3f41;
+    -fx-border-color: black;
+}
+
+#ipBar .label {
+    -fx-text-fill: aliceblue;
+}
+.button{
+
+    -fx-background-color:
+            #c3c4c4,
+            linear-gradient(#c6c6c6 50%, #efefef 100%),
+            radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);
+    -fx-pref-width: 3cm;
+    -fx-effect: dropshadow(gaussian, #000000, 0,0,2,2);
+}
+
+.button:hover{
+    -fx-background-color:
+            #c3c4c4,
+            linear-gradient(#e1e1e1 50%, #ffffff 100%),
+            radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);
+}
+.toggle-button{
+    -fx-background-color:
+            #c3c4c4,
+            linear-gradient(#c6c6c6 50%, #efefef 100%),
+            radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);
+
+    -fx-pref-width: 3cm;
+    -fx-effect: dropshadow(gaussian, #000000, 0,0,2,2);
+}
+.toggle-button:hover{
+    -fx-background-color:
+            #c3c4c4,
+            linear-gradient(#e1e1e1 50%, #ffffff 100%),
+            radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);
+}
+.toggle-button:selected{
+    -fx-background-color:
+            #c3c4c4,
+            linear-gradient(#6a6a6a 50%, #bcbcbc 100%);
+
+
+    -fx-effect: dropshadow(gaussian, black, -2, -2, 0, 0);
+
+}
+#stackPane{
+    -fx-background-color: lightgoldenrodyellow;
+}
+#colPicker.button{
+
+
+}

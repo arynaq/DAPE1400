@@ -69,7 +69,6 @@ public class DataPacket {
 		buffer.append(data.toJSON());
 		
 		buffer.append("}");
-
 		return buffer.toString();
 	}
 

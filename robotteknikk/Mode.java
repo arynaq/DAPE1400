@@ -26,6 +26,10 @@ public abstract class Mode {
 		this.data.addPoint(x,y);
 	}
 
+	public void addPoint(double x, double y, double z) {
+		this.data.addPoint(x,y,z);
+	}
+
 	public void sendTCP(){
 		tcp.send(state,tool,data);
 	}

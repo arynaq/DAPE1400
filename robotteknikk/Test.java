@@ -11,11 +11,11 @@ public class Test {
 
 
 		 ImmediateTCPController tcp  = new ImmediateTCPController("localhost", 27000);
-		Mode m = new ImmediateMode(tcp);
+		final Mode m = new ImmediateMode(tcp);
 
 		tcp.setContainer((ImmediateMode) m).connect();
 
-		tcp.startSendingPeriodic(5000);
+		tcp.startSendingPeriodic(50);
 
 		m.addPoint(3,3);
 		m.addPoint(3,4);
@@ -34,6 +34,20 @@ public class Test {
 		m.addPoint(3,4);
 		m.addPoint(3,4);
 		m.addPoint(3,4);
+
+		Runnable r = new Runnable(){
+			private int i;
+			private int j;
+			@Override
+			public void run(){
+				m.addPoint(i++, j++);
+			}
+
+		};
+
+		ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
+		exec.scheduleAtFixedRate(r, 100, 100, TimeUnit.MILLISECONDS);
+
+		
 	}
-
 }
