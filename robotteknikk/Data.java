@@ -44,7 +44,6 @@ public class Data {
 	}
 
 	public String toJSON(){
-		System.out.println(data.size());
 		if(data.isEmpty())
 			return empty;
 

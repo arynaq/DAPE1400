@@ -100,13 +100,13 @@ public class JavaFXApplication1 extends Application {
 
 
         //creating drawing space
-        Canvas workSpace = new Canvas(500, 500);
+        Canvas workSpace = new Canvas(800, 800);
         workSpace.setId("canvas");
         GraphicsContext graphicsContext = workSpace.getGraphicsContext2D();
 
 
         //border for working space
-        Canvas border_canvas = new Canvas(500, 500);
+        Canvas border_canvas = new Canvas(800, 800);
         GraphicsContext graphicsContext_border = border_canvas.getGraphicsContext2D();
         graphicsContext_border.strokeRect(
                 0,              //x of the upper left corner
@@ -297,13 +297,16 @@ public class JavaFXApplication1 extends Application {
         connect.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+				if(tcp!=null && tcp.isConnected()){
+					System.out.println("Connection already established");
+					return;
+				}
                 String[] values = ipField.getText().split(":");
                 System.out.println(Arrays.deepToString(values));
                 String hostname = values[0];
                 int port = Integer.parseInt(values[1]);
 
 				tcp = new ImmediateTCPController(hostname, port);
-				
 				tcp.setContainer((ImmediateMode) currentMode);
 				tcp.connect();
 				tcp.startSendingPeriodic(500);

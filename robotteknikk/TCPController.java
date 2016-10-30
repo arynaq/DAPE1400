@@ -14,7 +14,7 @@ public class TCPController{
 	private String hostname;
 	private Socket socket;
 	private DataInputStream in;
-	private DataOutputStream out;
+	private PrintWriter out;
 
 	private boolean connected;
 
@@ -40,7 +40,7 @@ public class TCPController{
 		System.out.println("Setting up socket..");
 		try {
 			socket = new Socket(hostname, port);
-			out = new DataOutputStream(socket.getOutputStream());;
+			out = new PrintWriter(socket.getOutputStream(), true);
 			in = new DataInputStream(socket.getInputStream());
 			connected = true;
 		}catch(IOException e){
@@ -62,7 +62,6 @@ public class TCPController{
 	 */
 	public void send(String state, Tool tool, Data data){
 		System.out.println(this+ " sendcount: "+callCount++);
-		System.out.println("Runningindex before send: " + runningIndex);
 		
 		List<DataPoint> dataPoints = data.asList();
 		List<DataPoint> dataCopy = new ArrayList<DataPoint>(dataPoints);
@@ -70,7 +69,6 @@ public class TCPController{
 		runningIndex = dataPoints.size();
 		writeToSocket(state, tool, new Data(toSend));
 
-		System.out.println("Runningindex after send: " + runningIndex);
 	}
 
 
@@ -91,31 +89,16 @@ public class TCPController{
 
 
 		if(N> maxDataSize) {
-			// Split into a part we can send now and a remainder we can send afterwards
-			// this will run recursively untill all data has been sent.
 			toSend = asList.subList(0, maxDataSize);
 			remainder = asList.subList(maxDataSize, N);
 
-			
-
-			try{
-				out.writeChars(new DataPacket(state, tool, data).toJSON());
-			} catch(IOException e) {
-				System.out.println("Failed to write datapacket");
-			}
+			out.println(new DataPacket(state, tool, data).toJSON());
 			writeToSocket(state,tool, new Data(remainder));
 		}
-		// if it actually fits, send now!
 		else {
-			System.out.println("In directsend..");
-			try {
-				out.writeUTF(new DataPacket(state,tool, data).toJSON());
-			}catch(IOException e){
-				System.out.println("Failed to write datapacket");
-			}
+			out.println(new DataPacket(state,tool,data).toJSON());
 			System.out.println("Sent!");
 		}
-
 
 
 	}
