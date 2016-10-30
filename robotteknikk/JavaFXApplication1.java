@@ -39,7 +39,7 @@ import javafx.stage.WindowEvent;
 public class JavaFXApplication1 extends Application {
 
     //changing active drawig mode
-    private ImmediateTCPController tcp = new ImmediateTCPController("localhost", 27000);
+    private ImmediateTCPController tcp;
     private Mode currentMode = new ImmediateMode(tcp);
 
     Circle circle11 = new Circle(100, 100, 25, Color.TRANSPARENT);
@@ -81,9 +81,6 @@ public class JavaFXApplication1 extends Application {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
-        tcp.setContainer((ImmediateMode) currentMode);
-        tcp.connect();
-        tcp.startSendingPeriodic(5000);
 
         colPicker.setId("colPicker");
 		black.setId("blackButton");
@@ -125,6 +122,7 @@ public class JavaFXApplication1 extends Application {
 			@Override
 			public void handle(ActionEvent event){
 				currentMode.getTool().setColor("black");
+				graphicsContext.setStroke(Color.BLACK);
 			}
 		});
 
@@ -133,6 +131,7 @@ public class JavaFXApplication1 extends Application {
 			@Override
 			public void handle(ActionEvent event){
 				currentMode.getTool().setColor("blue");
+				graphicsContext.setStroke(Color.BLUE);
 			}
 		});
 
@@ -141,6 +140,7 @@ public class JavaFXApplication1 extends Application {
 			@Override
 			public void handle(ActionEvent event){
 				currentMode.getTool().setColor("red");
+				graphicsContext.setStroke(Color.RED);
 			}
 		});
 
@@ -302,7 +302,11 @@ public class JavaFXApplication1 extends Application {
                 String hostname = values[0];
                 int port = Integer.parseInt(values[1]);
 
-                new TCPController(hostname, port);
+				tcp = new ImmediateTCPController(hostname, port);
+				
+				tcp.setContainer((ImmediateMode) currentMode);
+				tcp.connect();
+				tcp.startSendingPeriodic(500);
             }
         });
 
