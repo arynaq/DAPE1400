@@ -1,7 +1,24 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Tool {
 	private String color;
 	private String style;
 	private String resolution;
+	private static final Map<String, Integer> colorToInt = create();
+
+	
+
+	private static Map<String, Integer> create(){
+		Map<String,Integer> map = new HashMap<String, Integer>();
+
+		map.put("black", 0);
+		map.put("red", 1);
+		map.put("green", 2);
+		map.put("blue", 3);
+		return map;
+	}
+
 
 
 	public Tool(String color, String style, String resolution){
@@ -19,15 +36,19 @@ public class Tool {
 	public String toJSON(){
 		StringBuffer buffer = new StringBuffer();
 
-		buffer.append("{");
+		int colorValue = colorToInt.get(color);
 
-		buffer.append("Color: "+color);
-		buffer.append(",");
-		buffer.append("Style: "+style);
-		buffer.append(",");
-		buffer.append("Resolution: "+resolution);
+		buffer.append(colorValue);
 
-		buffer.append("}");
+		/**
+			buffer.append("{");
+			buffer.append("Color:"+color);
+			buffer.append(",");
+			buffer.append("Style:"+style);
+			buffer.append(",");
+			buffer.append("Resolution:"+resolution);
+			buffer.append("}");
+		**/
 
 		return buffer.toString();
 	}

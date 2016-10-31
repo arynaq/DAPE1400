@@ -57,15 +57,15 @@ public class DataPacket {
 		StringBuffer buffer = new StringBuffer();
 
 		buffer.append("{");
-		
-		buffer.append("State: " + state);
+		/**
+		buffer.append("State:" + state);
 		buffer.append(",");
-		
-		buffer.append("Tool: ");
+		**/
+		buffer.append("Tool:");
 		buffer.append(tool.toJSON());
 		buffer.append(",");
 
-		buffer.append("Data: ");
+		buffer.append("Data:");
 		buffer.append(data.toJSON());
 		
 		buffer.append("}");

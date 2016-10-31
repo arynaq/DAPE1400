@@ -32,7 +32,6 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-
 /**
  * @author Leonovo
  */
@@ -63,6 +62,7 @@ public class JavaFXApplication1 extends Application {
 	Button black = new Button("Black");
 	Button blue  = new Button("Blue");
 	Button red = new Button("Red");
+	Button green = new Button("Green");
 
     Button clearAll = new Button("Clear All");
 
@@ -86,6 +86,7 @@ public class JavaFXApplication1 extends Application {
 		black.setId("blackButton");
 		blue.setId("blueButton");
 		red.setId("redButton");
+		green.setId("greenButton");
 
         //detach circle from autoplacement
         circle11.setManaged(false);
@@ -123,6 +124,14 @@ public class JavaFXApplication1 extends Application {
 			public void handle(ActionEvent event){
 				currentMode.getTool().setColor("black");
 				graphicsContext.setStroke(Color.BLACK);
+			}
+		});
+
+		green.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event){
+				currentMode.getTool().setColor("green");
+				graphicsContext.setStroke(Color.GREEN);
 			}
 		});
 
@@ -201,7 +210,7 @@ public class JavaFXApplication1 extends Application {
 
                         moveX = event.getX();
                         moveY = event.getY();
-                           
+                          
                         
                         System.out.println("X verdien er " + moveX + "." + "Y verdien er " + moveY);
 
@@ -211,7 +220,11 @@ public class JavaFXApplication1 extends Application {
                         } else if (eraser.isSelected() == false && circle.isSelected() == false) {
                             graphicsContext.lineTo(event.getX(), event.getY());
                             graphicsContext.stroke();
-							currentMode.addPoint(moveX, moveY);
+
+							Bounds b = workSpace.boundsInLocalProperty().getValue();
+
+							if(b.contains(moveX,moveY))
+									currentMode.addPoint(moveX,moveY);
                         }
 
 
@@ -250,7 +263,8 @@ public class JavaFXApplication1 extends Application {
                 clearAll,
 				black,
 				blue,
-				red
+				red,
+				green
         );
 
         //buttons for left toolbar
@@ -297,7 +311,7 @@ public class JavaFXApplication1 extends Application {
         connect.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-				if(tcp!=null && tcp.isConnected()){
+				if(tcp != null && tcp.isConnected()){
 					System.out.println("Connection already established");
 					return;
 				}

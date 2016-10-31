@@ -7,7 +7,7 @@ import java.io.*;
 
 public class TCPController{
 	private int runningIndex  = 0;
-	private int maxDataSize = 50;
+	private int maxDataSize = 5;
 	private int port;
 	private int callCount = 0;
 

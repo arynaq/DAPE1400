@@ -15,6 +15,20 @@
 		-fx-font-size: 12px;
 }
 
+#greenButton{
+
+	  -fx-background-color: #000000,
+					linear-gradient(#006e2e, #006e2e),
+					linear-gradient(#006e2e, #006e2e),
+					linear-gradient(#006e2e, #006e2e);
+		-fx-background-insets: 0,1,2,3;
+		-fx-background-radius: 3,2,2,2;
+		-fx-padding: 12 30 12 30;
+		-fx-text-fill: white;
+		-fx-font-size: 12px;
+
+}
+
 #redButton{
 
 	  -fx-background-color: #000000,

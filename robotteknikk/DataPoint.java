@@ -19,11 +19,11 @@ public class DataPoint {
 
 		buffer.append("{");
 
-		buffer.append("x: "+ point.getX());
+		buffer.append((int)point.getX());
 		buffer.append(",");
-		buffer.append("y: "+ point.getY());
+		buffer.append((int)point.getY());
 		buffer.append(",");
-		buffer.append("z: "+ point.getZ());
+		buffer.append((int)point.getZ());
 
 		buffer.append("}");
 
