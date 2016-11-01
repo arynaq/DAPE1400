@@ -10,6 +10,9 @@ class TCPTestServer(protocol.Protocol):
         print "Received data:"
         print data;
 
+    def connectionMade(self):
+        print "Connection made..."
+        self.transport.setTcpNoDelay(True)
 
 
 class ServerFactory(protocol.Factory):

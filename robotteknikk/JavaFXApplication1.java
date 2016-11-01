@@ -37,86 +37,68 @@ import javafx.stage.WindowEvent;
  */
 public class JavaFXApplication1 extends Application {
 
-    //changing active drawig mode
-    private ImmediateTCPController tcp;
-    private Mode currentMode = new ImmediateMode(tcp);
+	//changing active drawig mode
+	private ImmediateTCPController tcp;
+	private Mode currentMode = new ImmediateMode(tcp);
 
-    Circle circle11 = new Circle(100, 100, 25, Color.TRANSPARENT);
 
-    double startX, startY, stopX, stopY;
-    double totalX, totalY;
-    double radius;
-    double prevRadius = 0;
-    double moveX;
-    double moveY;
-    double startMoveX;
-    double startMoveY;
+	private	double startX, startY, stopX, stopY;
+	private	double totalX, totalY;
+	private	double moveX;
+	private	double moveY;
+	private	double startMoveX;
+	private	double startMoveY;
 
-    //creating color picker object for the whole class
-    ColorPicker colPicker = new ColorPicker(Color.BLACK);
-    Color c;
-    //eraser toggle button for the whole class
-    ToggleButton eraser = new ToggleButton("ERASER");
-    ToggleButton circle = new ToggleButton("CIRCLE");
+	private static final int WIDTH = 800;
+	private static final int HEIGHT = 800;
+
+	//eraser toggle button for the whole class
+	ToggleButton eraser = new ToggleButton("Eraser");
 
 	Button black = new Button("Black");
 	Button blue  = new Button("Blue");
 	Button red = new Button("Red");
 	Button green = new Button("Green");
 
-    Button clearAll = new Button("Clear All");
+	Button clearAll = new Button("Clear All");
 
 
-    @Override
-    public void start(Stage primaryStage) {
-        
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                
-                //Testing of the coordinates array print on closing of the application
-                System.out.println("Close requested");
-                System.out.println("Foreløpig data: ");
-                System.out.println(currentMode.getData().toJSON());
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        });
+	@Override
+	public void start(Stage primaryStage) {
 
-        colPicker.setId("colPicker");
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent event) {
+				throw new UnsupportedOperationException("Not supported yet.");
+			}
+		});
+
 		black.setId("blackButton");
 		blue.setId("blueButton");
 		red.setId("redButton");
 		green.setId("greenButton");
 
-        //detach circle from autoplacement
-        circle11.setManaged(false);
+
+		StackPane stackPane = new StackPane();
+		stackPane.setId("stackPane");
+
+		//creating drawing space
+		Canvas workSpace = new Canvas(WIDTH, HEIGHT);
+		workSpace.setId("canvas");
+		GraphicsContext graphicsContext = workSpace.getGraphicsContext2D();
 
 
-        StackPane stackPane = new StackPane();
-        stackPane.setId("stackPane");
-        //defining color picker as a combobox/dropdown menu
-        c = colPicker.getValue();
-        colPicker.getStyleClass().add("split-button");
-        colPicker.getStyleClass().add("button");
+		//border for working space
+		Canvas border_canvas = new Canvas(WIDTH, HEIGHT);
+		GraphicsContext graphicsContext_border = border_canvas.getGraphicsContext2D();
+		graphicsContext_border.strokeRect(
+				0,              //x of the upper left corner
+				0,              //y of the upper left corner
+				border_canvas.getWidth(),    //width of the rectangle
+				border_canvas.getHeight());  //height of the rectangle);
 
 
-        //creating drawing space
-        Canvas workSpace = new Canvas(800, 800);
-        workSpace.setId("canvas");
-        GraphicsContext graphicsContext = workSpace.getGraphicsContext2D();
-
-
-        //border for working space
-        Canvas border_canvas = new Canvas(800, 800);
-        GraphicsContext graphicsContext_border = border_canvas.getGraphicsContext2D();
-        graphicsContext_border.strokeRect(
-                0,              //x of the upper left corner
-                0,              //y of the upper left corner
-                border_canvas.getWidth(),    //width of the rectangle
-                border_canvas.getHeight());  //height of the rectangle);
-
-
-        initDraw(graphicsContext);
+		initDraw(graphicsContext);
 
 
 		black.setOnAction(new EventHandler<ActionEvent>(){
@@ -144,7 +126,7 @@ public class JavaFXApplication1 extends Application {
 			}
 		});
 
-		
+
 		red.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event){
@@ -153,330 +135,187 @@ public class JavaFXApplication1 extends Application {
 			}
 		});
 
+		//Clear all
+		clearAll.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				graphicsContext.clearRect(0, 0, workSpace.getWidth(), workSpace.getHeight());
+				graphicsContext.strokeRect(
+						0,              //x of the upper left corner
+						0,              //y of the upper left corner
+						workSpace.getWidth(),    //width of the rectangle
+						workSpace.getHeight());  //height of the rectangle
+
+			}
+
+		});
 
 
-        //color picker decides color in graphicContext on eventhandler
-        colPicker.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                graphicsContext.setStroke(colPicker.getValue());
-            }
-        });
+		//what happens when mouse pressed
+		workSpace.addEventHandler(MouseEvent.MOUSE_PRESSED,
+				new EventHandler<MouseEvent>() {
 
-        //Clear all
-        clearAll.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                graphicsContext.clearRect(0, 0, workSpace.getWidth(), workSpace.getHeight());
-                stackPane.getChildren().remove(circle11);
-                graphicsContext.strokeRect(
-                        0,              //x of the upper left corner
-                        0,              //y of the upper left corner
-                        workSpace.getWidth(),    //width of the rectangle
-                        workSpace.getHeight());  //height of the rectangle
-
-            }
-
-        });
+					@Override
+					public void handle(MouseEvent event) {
+						graphicsContext.beginPath();
+						//reading the position of mouse pointer
+						graphicsContext.moveTo(event.getX(), event.getY());
+						graphicsContext.stroke();
+					}
+				});
 
 
-        //what happens when mouse pressed
-        workSpace.addEventHandler(MouseEvent.MOUSE_PRESSED,
-                new EventHandler<MouseEvent>() {
+		//what happens while holding mouse
+		workSpace.addEventHandler(MouseEvent.MOUSE_DRAGGED,
+				new EventHandler<MouseEvent>() {
 
-                    @Override
-                    public void handle(MouseEvent event) {
-                        graphicsContext.beginPath();
-                        //reading the position of mouse pointer
-                        graphicsContext.moveTo(event.getX(), event.getY());
-                        graphicsContext.stroke();
+					@Override
+					public void handle(MouseEvent event) {
+						moveX = event.getX();
+						moveY = event.getY();
 
-
-                        if (circle.isSelected() == true) {
-                            stackPane.getChildren().add(circle11);
-                            Bounds bounds = circle11.getBoundsInParent();
-                            System.out.println("bounds are : " + bounds);
-                        }
-                    }
-                });
-
-
-        //what happens while holding mouse
-        workSpace.addEventHandler(MouseEvent.MOUSE_DRAGGED,
-                new EventHandler<MouseEvent>() {
-
-                    @Override
-                    public void handle(MouseEvent event) {
-
-                        moveX = event.getX();
-                        moveY = event.getY();
-                          
-                        
-                        System.out.println("X verdien er " + moveX + "." + "Y verdien er " + moveY);
-
-
-                        if (eraser.isSelected() == true && circle.isSelected() == false) {
-                            graphicsContext.clearRect(event.getX(), event.getY(), 30, 30);
-                        } else if (eraser.isSelected() == false && circle.isSelected() == false) {
-                            graphicsContext.lineTo(event.getX(), event.getY());
-                            graphicsContext.stroke();
-
+						if (eraser.isSelected()) {
+							graphicsContext.clearRect(event.getX(), event.getY(), 30, 30);
+						} else {
+							graphicsContext.lineTo(event.getX(), event.getY());
+							graphicsContext.stroke();
 							Bounds b = workSpace.boundsInLocalProperty().getValue();
-
 							if(b.contains(moveX,moveY))
-									currentMode.addPoint(moveX,moveY);
-                        }
+								currentMode.addPoint(moveX,moveY);
+						}
 
 
-                    }
-                });
+					}
+				});
 
-        //what happens when mouse is unpressed on workspace
-        workSpace.addEventHandler(MouseEvent.MOUSE_RELEASED,
-                new EventHandler<MouseEvent>() {
+		//what happens when mouse is unpressed on workspace
+		workSpace.addEventHandler(MouseEvent.MOUSE_RELEASED,
+				new EventHandler<MouseEvent>() {
 
-                    @Override
-                    public void handle(MouseEvent event) {
-                        if (circle.isSelected() == true && eraser.isSelected() == false) {
-
-                        }
-
-						if(!eraser.isSelected() && !circle.isSelected()){
+					@Override
+					public void handle(MouseEvent event) {
+						if(!eraser.isSelected()){
 							currentMode.addPoint(event.getX(), event.getY(), 1);
 						}
-                    }
-                });
+					}
+				});
 
 
-        //buttongs for left toolbar
-        Button pen = new Button("PEN");
+		//buttongs for left toolbar
+		Button pen = new Button("Pen");
 
 
-        ToolBar drawBar = new ToolBar();
-        drawBar.setId("drawBar");
-        drawBar.setOrientation(Orientation.VERTICAL);
-        drawBar.getItems().addAll(
-                circle,
-                pen,
-                //colPicker,  skip adding this for now, full palette not supported
-                eraser,
-                clearAll,
+		ToolBar drawBar = new ToolBar();
+		drawBar.setId("drawBar");
+		drawBar.setOrientation(Orientation.VERTICAL);
+		drawBar.getItems().addAll(
+				pen,
+				eraser,
+				clearAll
+				);
+
+		ToolBar choiceBar = new ToolBar();
+		choiceBar.setId("rightBar");
+		choiceBar.getItems().addAll(
 				black,
-				blue,
 				red,
+				blue,
 				green
-        );
-
-        //buttons for left toolbar
-        Button sendPicture = new Button("Send");
-        ToggleButton savedMode = new ToggleButton("Saved Mode");
-        ToolBar choiceBar = new ToolBar();
-        choiceBar.setId("rightBar");
-        choiceBar.getItems().addAll(
-                sendPicture,
-                savedMode
-        );
-
-        savedMode.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (savedMode.isSelected()) {
-                    currentMode = new SavedMode(null);
-                } else
-                    currentMode = new ImmediateMode(null);
-
-                System.out.println("Mode is: " + currentMode);
-
-            }
-        });
-
-        choiceBar.setOrientation(Orientation.VERTICAL);
+				);
 
 
-        //ip toolbar bottom
-        TextField ipField = new TextField();
-        Label ipText = new Label("Enter IP adress");
-        Button connect = new Button("Connect");
-        ToolBar ipBar = new ToolBar();
-        ipBar.setId("ipBar");
-        ipBar.getItems().addAll(
-                ipText,
-                ipField,
-                //new Separator(),
-                connect
-        );
+		choiceBar.setOrientation(Orientation.VERTICAL);
 
 
-        //tcp connect logic
-        connect.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+		//ip toolbar bottom
+		TextField ipField = new TextField("localhost:27000");
+		Label ipText = new Label("   Enter IP adress:");
+		Button connect = new Button("Connect");
+		ToolBar ipBar = new ToolBar();
+		ipBar.setId("ipBar");
+		ipBar.getItems().addAll(
+				ipText,
+				ipField,
+				//new Separator(),
+				connect
+				);
+
+
+		//tcp connect logic
+		connect.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
 				if(tcp != null && tcp.isConnected()){
 					System.out.println("Connection already established");
 					return;
 				}
-                String[] values = ipField.getText().split(":");
-                System.out.println(Arrays.deepToString(values));
-                String hostname = values[0];
-                int port = Integer.parseInt(values[1]);
+				String[] values = ipField.getText().split(":");
+				
+				String hostname = values[0];
+				int port = Integer.parseInt(values[1]);
 
 				tcp = new ImmediateTCPController(hostname, port);
 				tcp.setContainer((ImmediateMode) currentMode);
 				tcp.connect();
-				tcp.startSendingPeriodic(500);
-            }
-        });
+				tcp.startSendingPeriodic(50);
+			}
+		});
 
-        //outline of circle
-        circle11.setStroke(Color.BLACK);
-        circle11.setCursor(Cursor.CROSSHAIR);
+		BorderPane root = new BorderPane();
+		root.setLeft(drawBar);
+		root.setRight(choiceBar);
+		root.setBottom(ipBar);
+		root.setCenter(stackPane);
+		stackPane.getChildren().addAll(border_canvas,workSpace);
 
+		Scene scene = new Scene(root, 800, 600);
 
-        BorderPane root = new BorderPane();
-        root.setLeft(drawBar);
-        root.setRight(choiceBar);
-        root.setBottom(ipBar);
-        root.setCenter(stackPane);
-        stackPane.getChildren().addAll(border_canvas,workSpace);
+		scene.getStylesheets().add(this.getClass().getResource("myCSS.css").toExternalForm());
 
+		primaryStage.setTitle("RobotTP");
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
 
-        circle11.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-
-                //saving start location of circle for resize calculations
-                startX = circle11.getCenterX();
-                startY = circle11.getCenterY();
-                System.out.println("startX er: " + startX);
-                System.out.println("startY er: " + startY);
-
-
-            }
-        });
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String[] args) {
+		launch(args);
+	}
 
 
-        //removing cicrle object from stackPane and other circle related ops
-        circle11.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-
-                startMoveX = event.getX();
-                startMoveY = event.getY();
+	//draw method
+	private void initDraw(GraphicsContext gc) {
 
 
-                if (eraser.isSelected() == true) {
-                    stackPane.getChildren().remove(circle11);
-                }
+		System.out.println("javafxapplication1.JavaFXApplication1.initDraw()");
 
-            }
+		double canvasWidth = gc.getCanvas().getWidth();
+		double canvasHeight = gc.getCanvas().getHeight();
 
-
-        });
-
-        circle11.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-
-                stopX = event.getX();
-                stopY = event.getY();
-
-                System.out.println("stopX er: " + stopX);
-                System.out.println("stopY er: " + stopY);
-
-                totalX = stopX - startX;
-                System.out.println("totalX er: " + totalX);
-                totalY = stopY - startY;
-
-                radius = totalX * totalX + totalY * totalY;
-
-                if (radius > prevRadius + 10 && event.isShiftDown()) {
-
-                    circle11.setRadius(circle11.getRadius() + 1);
-                } else if (radius < prevRadius + 10 && event.isShiftDown()) {
-
-                    circle11.setRadius(circle11.getRadius() - 1);
-                }
-
-                //circle move logic here
-                else {
-                    System.out.println("shift not pressed");
-                    circle11.setCenterX(stopX);
-                    circle11.setCenterY(stopY);
-                }
+		gc.setFill(Color.LIGHTGRAY);
+		gc.setStroke(Color.BLACK);
 
 
-                System.out.println("totalY er: " + totalY);
+		gc.fill();
+		/*gc.strokeRect(
+		  0,              //x of the upper left corner
+		  0,              //y of the upper left corner
+		  canvasWidth,    //width of the rectangle
+		  canvasHeight);  //height of the rectangle*/
 
-                prevRadius = radius;
+		//eraser
+		if (eraser != null) {
+			gc.clearRect(canvasWidth, canvasWidth, canvasWidth, canvasWidth);
+		}
 
-
-            }
-        });
-
-
-        circle11.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-
-
-                Bounds bounds = circle11.getBoundsInLocal();
-                System.out.println("bounds: " + bounds);
-
-
-            }
+		gc.setFill(Color.RED);
+		gc.setStroke(Color.BLACK);
+		gc.setLineWidth(1);
 
 
-        });
-
-
-        Scene scene = new Scene(root, 800, 600);
-
-        scene.getStylesheets().add(this.getClass().getResource("myCSS.css").toExternalForm());
-
-        primaryStage.setTitle("RobotTP");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-
-    //draw method
-    private void initDraw(GraphicsContext gc) {
-
-
-        System.out.println("javafxapplication1.JavaFXApplication1.initDraw()");
-
-        double canvasWidth = gc.getCanvas().getWidth();
-        double canvasHeight = gc.getCanvas().getHeight();
-
-        gc.setFill(Color.LIGHTGRAY);
-        gc.setStroke(Color.BLACK);
-
-
-        gc.fill();
-        /*gc.strokeRect(
-                0,              //x of the upper left corner
-                0,              //y of the upper left corner
-                canvasWidth,    //width of the rectangle
-                canvasHeight);  //height of the rectangle*/
-
-        //eraser
-        if (eraser != null) {
-            gc.clearRect(canvasWidth, canvasWidth, canvasWidth, canvasWidth);
-        }
-
-        gc.setFill(Color.RED);
-        gc.setStroke(colPicker.getValue());
-        gc.setLineWidth(1);
-
-
-    }
+	}
 
 
 

@@ -13,6 +13,12 @@ public class TCPController{
 
 	private String hostname;
 	private Socket socket;
+	
+	/**
+	 * Input and output streams for socket 
+	 * in reads from server
+	 * out writes to server
+	 * */
 	private DataInputStream in;
 	private PrintWriter out;
 
@@ -27,21 +33,22 @@ public class TCPController{
 	}
 
 	public void connect(){
-		if(connected)
-			return;
-		setupSocket();
+		if(!isConnected())
+			setupSocket();
 	}
 
 	public boolean isConnected(){
-		return connected;
+		if (socket == null) return false;
+		return !socket.isClosed() && socket.isConnected();
 	}
 
 	private void setupSocket(){
 		System.out.println("Setting up socket..");
 		try {
 			socket = new Socket(hostname, port);
-			out = new PrintWriter(socket.getOutputStream(), true);
+			out = new PrintWriter(socket.getOutputStream());
 			in = new DataInputStream(socket.getInputStream());
+			socket.setTcpNoDelay(true);
 			connected = true;
 		}catch(IOException e){
 			System.out.println("Failed at initiating socket");
@@ -61,12 +68,14 @@ public class TCPController{
 	 *
 	 */
 	public void send(String state, Tool tool, Data data){
-		System.out.println(this+ " sendcount: "+callCount++);
-		
+
 		List<DataPoint> dataPoints = data.asList();
 		List<DataPoint> dataCopy = new ArrayList<DataPoint>(dataPoints);
 		List<DataPoint> toSend = dataCopy.subList(runningIndex, dataCopy.size());
+
+
 		runningIndex = dataPoints.size();
+		
 		writeToSocket(state, tool, new Data(toSend));
 
 	}
@@ -81,23 +90,33 @@ public class TCPController{
 	 *
 	 * */
 	private void writeToSocket(String state, Tool tool, Data data){
-		System.out.println("In write to socket...");
 		List<DataPoint> asList = data.asList();
 		List<DataPoint> toSend = null;
 		List<DataPoint> remainder = null;
 		int N = asList.size();
 
-
 		if(N> maxDataSize) {
 			toSend = asList.subList(0, maxDataSize);
 			remainder = asList.subList(maxDataSize, N);
 
-			out.println(new DataPacket(state, tool, data).toJSON());
+			String packetAsJSON = new DataPacket(state,tool,new Data(toSend)).toJSON();
+
+			out.println(packetAsJSON);
+			out.flush();
+			System.out.println("Sent: ");
+			System.out.println(packetAsJSON);
+
+
 			writeToSocket(state,tool, new Data(remainder));
 		}
 		else {
-			out.println(new DataPacket(state,tool,data).toJSON());
-			System.out.println("Sent!");
+			String packetAsJSON = new DataPacket(state,tool,data).toJSON();			
+
+			out.println(packetAsJSON);
+			out.flush();
+
+			System.out.println("Sent: ");
+			System.out.println(packetAsJSON);
 		}
 
 
