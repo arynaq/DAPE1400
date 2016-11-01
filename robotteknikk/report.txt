@@ -1,0 +1,101 @@
+The paint program has a controller that is resposinble for saving points to a backing dataobject whenever a paint function is used to draw on the screen. This controller is defined by the class Mode.
+
+The controller above (Mode) has functionality for sending its backing datapoints in a predefined dataformat over TCP. It accomplishes this by exposing a function sendTCP() which will delegate the responsibility of sending to another controller defined in TCPController. This tcp-controller then decides how it will send the data in its send() function.
+
+In our program we have implemented a scheme where painting on the screen is transferred live to the robot. Therefore it makes sense to use a more specialized TCP-controller by subclassing the general TCPcontroller. This more specialized tcpcontroller is defined in "ImmediateTCPController". ImmediateTCPController accomplishes sending by exposing a function startSendingPeriodic(period) which must be run after a connection is established to server. This function will attempt to send its data by calling send() periodically.
+
+
+
+In detail:
+
+	DataPoint:
+		A class that simply encapsulates (x,y,z) 
+		
+		- Has a method for returning (x,y,z) as JSON
+	
+	
+	Data:
+		A class for maintaining a list of DataPoints
+		
+		- Has a method for adding a point
+		- Has a method for retrieving all points as a list
+		- Has a method for returning the list as a JSON by calling the JSON method of each 		     datapoint.
+
+
+	Tool:
+		A class that simply encapsulates the tool state by keeping track of color, style
+		and resolution.
+
+		- Has a method for returning a JSON string representin this tool.
+
+
+
+	DataPacket:
+
+		A class for encapsulating a Data object, Tool Object and State object
+		to ease sending over TCP.
+
+		
+		- Has a method for for returning a JSON string by calling the JSON methods 
+                  for each object (Data, Tool, State)
+
+	TCPController: (Threaded)
+
+		This class does the heavy lifting for sending data to server.
+
+		- Initiates a socket (TCP) to a server by a given hostname and port
+		- Tries to disable Nagles algorithm (see below).
+
+		- Has a send method that can be called with State, Tool and Data 
+		  as paramaters.
+
+		- This send method checks if it can send all the data in one go by checking against	             a predefined variable that sets maximum allowed datapoints in one datapacket
+		- If it fits, send in one go, flush the socket (forcing TCP PSH)
+		- If it doesn't, split in a fitting chunk and a remainder.
+		- Send fitting chunk, call itself with the remainder as new data (recursive)
+
+
+	
+	ImmediateTCPController: (subclass of TCPController, so threaded)
+
+		This class has the same functionality as TCPController but with the added
+		functionality of being live.
+
+		- Accomplishes live TCP transferring by periodically calling its own send()
+                  method on the data.
+
+
+
+Architecture of the Mode classes:
+
+	These classes were designed with future-proofness in mind, the idea that should we choose
+	to we could add functionality without rewriting a whole lot of code.
+
+	The Mode class accomplishes this by being very general, only storing data and tool and 
+	state info. 
+
+
+Architecture of the TCP classes:
+
+	The major problem here is that TCP communication is blocking. That is to say as soon
+	as a write/read is requested on a socket everything else must wait untill these 
+	write/reads are finished.
+
+	This would make sending data over TCP from the paintprogram look very ugly, becaue every
+	time some data is being sent the canvas wont respond to any drawing!
+
+	We solve this by running the TCP controller in its own thread, by implementing the runnable	   interface in Java. As is the case for the ImmediateTCPController it is being executed
+	as a seperate thread from the GUI thread so they won't block eachother.
+
+
+	There is however the issue of threadsafety for the backing data (Data class).
+        What happens if we write to a list that is simulatenously being sent over TCP in a seperate	   thread (by adding points from the canvas)?
+
+	Nothing good, the behavior is undefined, it might work, it might crash, it might send
+	duplicate points or simply lock both threads.
+
+	We avoid this by taking a copy of the data being sent every time send() method is requested	   That way no matter what we do with the "real" data in the canvas it wont have any effect
+        on the data that is "in transit" in the TCP thread.
+
+
+
