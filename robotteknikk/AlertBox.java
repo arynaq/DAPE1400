@@ -9,6 +9,18 @@ import javafx.stage.Stage;
 import java.io.*;
 
 public class AlertBox{
+
+
+
+	/**
+	 * A class for displaying errors as standalone windows. 
+	 *
+	 *
+	 *
+	 * Is currently unused
+	 *
+	 *
+	 * */
  
 	private Alert alert;
 	private StringWriter sw;
@@ -37,11 +49,28 @@ public class AlertBox{
 	}
 
 
+	/**
+	 * Create new error from text string
+	 *
+	 * */
+
+	public AlertBox(String error){
+		this(new Exception(error));
+	}
+
+
+	/**
+	 * Sets up the displayed text in the error box..
+	 *
+	 * @TODO: Can probably find better descriptions.
+	 *
+	 * */
+
 	private void setupAndShow(Exception e){
 
-		alert.setTitle("Error.");
-		alert.setHeaderText("An error occured");
-		alert.setContentText("K");
+		alert.setTitle("WARNING/ERROR");
+		alert.setHeaderText("An error has occured, please check details.");
+		alert.setContentText("AN ERROR OR WARNING HAS BEEN GENERATED");
 
 		e.printStackTrace(pw);
 		exceptionString = sw.toString();

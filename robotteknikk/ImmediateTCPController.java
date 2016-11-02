@@ -43,14 +43,33 @@ public class ImmediateTCPController extends TCPController implements Runnable{
 	private boolean sending;
 
 
+
+	/**
+	 * Calls the constructor of TCPController. See that
+	 *
+	 * */ 
+
 	public ImmediateTCPController(String hostname, int port){
 		super(hostname, port);
 	}
 
+
+	/* 
+	 * Sends the controller is sending state, data and tool it needs to have access to these
+	 *
+	 * Supplied via a "container" class 
+	 *
+	 * */ 
 	public ImmediateTCPController setContainer(ImmediateMode container) {
 		this.container = container;
 		return this;
 	}
+
+
+	/**
+	 * Since the class implements runnable it can be (and should be) started in a seperate thread
+	 * as to not block the thread that supplies it data via container.
+	 * */ 
 
 	@Override
 	public void run(){
@@ -58,6 +77,11 @@ public class ImmediateTCPController extends TCPController implements Runnable{
 		super.send(container.getState(), container.getTool(), container.getData());
 	}
 
+
+	/*
+	 * We dont want to send data if we are aleady sending..
+	 *
+	 * */ 
 	@Override
 	public void send(String state, Tool tool, Data data){
 		if(sending)
@@ -65,6 +89,12 @@ public class ImmediateTCPController extends TCPController implements Runnable{
 		super.send(state,tool,data);
 	}
 
+
+
+	/**
+	 * Starts a scheduled thread that will call the run() method in this class every periodMillis
+	 *
+	 * */ 
 	public void startSendingPeriodic(int periodMillis){
 		if(sending){
 			System.out.println("Already sending....");

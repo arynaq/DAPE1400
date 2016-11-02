@@ -10,6 +10,8 @@ public class ImmediateMode extends Mode{
 	 * This is the main controller class for immediate mode
 	 * 
 	 *
+	 *
+	 * Currently doesn't require much more functionality than its parentclass
 	 * */
 
 	public ImmediateMode(TCPController tcp){

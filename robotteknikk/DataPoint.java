@@ -4,6 +4,12 @@ import javafx.geometry.Point3D;
 
 public class DataPoint {
 
+
+	/**
+	 * A wrapper class for a 3Dimensional datapoint
+	 *
+	 * */ 
+
 	private Point3D point;
 
 	public DataPoint(double x, double y){

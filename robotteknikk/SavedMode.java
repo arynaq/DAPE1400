@@ -2,6 +2,8 @@
  * This class behaves in almost the same way as the immediatemode class
  * The major difference being that it will only accept additional datapoints
  * if it is not in the saved state. 
+ *
+ * @TODO Implement, it is not used 
  * */
 
 public class SavedMode extends Mode{

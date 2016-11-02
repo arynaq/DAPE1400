@@ -3,6 +3,18 @@ import java.util.ArrayList;
 
 public class Data {
 
+
+	/**
+	 *  This class acts as a container for datapoints.
+	 *
+	 *  Exposes it backing storage by the functions asList()
+	 *  and addPoint()
+	 *
+	 *
+	 *
+	 *
+	 * */
+
 	private List<DataPoint> data = new ArrayList<>();
 	private static final String empty = "[]";
 
@@ -10,12 +22,18 @@ public class Data {
 		data.add(new DataPoint(x,y));
 	}
 
+
+	/**
+	 * Adds a new datapoint to the backing datalist
+	 *
+	 * */
 	public void addPoint(double x, double y, double z){
 		data.add(new DataPoint(x,y,z));
 	}
 
 	/**
 	 * Copy constructor
+	 * Creats a new Data object by using the provided data as its own datalist
 	 * */
 	public Data(List<DataPoint> data){
 		this.data = data;
@@ -28,21 +46,37 @@ public class Data {
 	public Data(){
 	}
 
-
-	public DataPoint getLastDataPoint(){
-		return data.get(data.size()- 1);
-	}
-
+	/**
+	 * Returns the list of datapoint.
+	 * */
 
 	public List<DataPoint> asList(){
 		return data;
 	}
 
 
+	/**
+	 * Returns the number of datapoints saved in this objets data list
+	 *
+	 * */
+
 	public int getDataSize(){
 		return data.size();
 	}
 
+
+
+	/*
+	 *  Returns a JSON file containing an arryay of every point converted to JSON.
+	 *
+	 *  Suppose the list has 2 dataponts that look like this: (1,2,3), (4,5,6)
+	 *
+	 *  This method will then return
+	 *
+	 *  [{1,2,3}, {4,5,6}]
+	 *
+	 *
+	 * */ 
 	public String toJSON(){
 		if(data.isEmpty())
 			return empty;

@@ -1,4 +1,13 @@
 public class DataPacket {
+
+	/**
+	 * A convinience class for storing and retrieving the current state, tool and data
+	 *
+	 * Very convinient for sending data over TCP by the use of its toJSON method.
+	 *
+	 **/ 
+
+
 	private String state;
 	private Tool tool;
 	private Data data;
@@ -58,8 +67,10 @@ public class DataPacket {
 
 		buffer.append("{");
 		/**
-		buffer.append("State:" + state);
-		buffer.append(",");
+		 *
+		 * The section below is commented out as currently we only have 1 state...
+			buffer.append("State:" + state);
+			buffer.append(",");
 		**/
 		buffer.append("Tool:");
 		buffer.append(tool.toJSON());

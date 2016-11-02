@@ -245,19 +245,23 @@ public class JavaFXApplication1 extends Application {
 		connect.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				if(tcp != null && tcp.isConnected()){
-					System.out.println("Connection already established");
-					return;
-				}
 				String[] values = ipField.getText().split(":");
-				
 				String hostname = values[0];
 				int port = Integer.parseInt(values[1]);
+
+				if(tcp != null && tcp.isConnected()){
+					new AlertBox("Connection already established to server...");
+					return;
+				}
+
+				if(tcp != null && !tcp.isConnected()){
+					new AlertBox("Connection lost, establishing new one...");
+				}
 
 				tcp = new ImmediateTCPController(hostname, port);
 				tcp.setContainer((ImmediateMode) currentMode);
 				tcp.connect();
-				tcp.startSendingPeriodic(50);
+				tcp.startSendingPeriodic(500);
 			}
 		});
 

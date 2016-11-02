@@ -9,6 +9,12 @@
 
 
 public abstract class Mode {
+	
+	/* This class acts as a controller for the drawing application, supplies an interface
+	 * for changing the application state via set and get methods on the contained data, tool, state
+	 * and tcpcontroller.
+	 * */
+
 
 	private String state;
 	private Tool tool;
