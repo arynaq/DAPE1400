@@ -81,6 +81,7 @@ public class TCPController{
 			connected = true;
 		}catch(IOException e){
 			System.out.println("Failed at initiating socket");
+			new AlertBox(e);
 		}
 	}
 
