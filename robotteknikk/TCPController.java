@@ -115,13 +115,16 @@ public class TCPController{
 
 	private void waitforOK(){
 
-		String ret = null;
+		char[] buff = new char[100];
 		System.out.println("Waiting for ok confirmation...");
 
 		try{
-			while((ret = in.readLine()) != null && !(ret.contains(confirmMsg))) {
-				System.out.println("Received: " + ret);
+			while(in.read(buff,0,100) != -1) {
+					String ret = new String(buff);
+					System.out.println("Received: " + ret);
+					if(ret.contains(confirmMsg)) break;   
 			}
+			
 		}catch(Exception e) {
 			System.out.println("Exception occured in readLine");
 		}
