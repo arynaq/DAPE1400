@@ -230,7 +230,7 @@ public class JavaFXApplication1 extends Application {
 
 
 		//ip toolbar bottom
-		TextField ipField = new TextField("localhost:27000");
+		TextField ipField = new TextField("192.168.125.1:27000");
 		Label ipText = new Label("   Enter IP adress:");
 		Button connect = new Button("Connect");
 		ToolBar ipBar = new ToolBar();
