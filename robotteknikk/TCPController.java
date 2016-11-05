@@ -35,7 +35,7 @@ public class TCPController{
 
 	private String hostname;
 	private Socket socket;
-	
+
 	/**
 	 * Input and output streams for socket 
 	 * in reads from server
@@ -106,7 +106,7 @@ public class TCPController{
 
 
 		runningIndex = dataPoints.size();
-		
+
 		writeToSocket(state, tool, new Data(toSend));
 
 	}
@@ -128,6 +128,13 @@ public class TCPController{
 		List<DataPoint> remainder = null;
 		int N = asList.size();
 
+
+
+		/**
+		 * If it doesnt fit, send and split in a smaller chunk
+		 * */
+
+
 		if(N> maxDataSize) {
 			toSend = asList.subList(0, maxDataSize);
 			remainder = asList.subList(maxDataSize, N);
@@ -139,9 +146,17 @@ public class TCPController{
 			System.out.println("[" + new Date().toString() + "]"+"Sent: ");
 			System.out.println(packetAsJSON);
 
-
+			try {
+				Thread.sleep(2000);
+			}catch(Exception e){
+			}
 			writeToSocket(state,tool, new Data(remainder));
 		}
+
+		/**
+		 * 
+		 *  Send now
+		 * */
 		else {
 			String packetAsJSON = new DataPacket(state,tool,data).toJSON();			
 
