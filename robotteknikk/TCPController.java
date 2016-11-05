@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.net.*;
 import java.io.*;
+import java.util.Date;
 
 
 /**
@@ -111,6 +112,8 @@ public class TCPController{
 	}
 
 
+
+
 	/**
 	 * This method will recursively attempt to send the whole contents of the
 	 * given list of datapoints in chunks of at most maxDataSize
@@ -133,7 +136,7 @@ public class TCPController{
 
 			out.println(packetAsJSON);
 			out.flush();
-			System.out.println("Sent: ");
+			System.out.println("[" + new Date().toString() + "]"+"Sent: ");
 			System.out.println(packetAsJSON);
 
 
@@ -145,7 +148,7 @@ public class TCPController{
 			out.println(packetAsJSON);
 			out.flush();
 
-			System.out.println("Sent: ");
+			System.out.println("[" + new Date().toString() + "]"+"Sent: ");
 			System.out.println(packetAsJSON);
 		}
 
