@@ -104,6 +104,7 @@ public class JavaFXApplication1 extends Application {
 		black.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event){
+				if(currentMode.getState().equals("lifting")) return;
 				currentMode.getTool().setColor("black");
 				graphicsContext.setStroke(Color.BLACK);
 			}
@@ -112,6 +113,7 @@ public class JavaFXApplication1 extends Application {
 		green.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event){
+				if(currentMode.getState().equals("lifting")) return;
 				currentMode.getTool().setColor("green");
 				graphicsContext.setStroke(Color.GREEN);
 			}
@@ -121,6 +123,7 @@ public class JavaFXApplication1 extends Application {
 		blue.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event){
+				if(currentMode.getState().equals("lifting")) return;
 				currentMode.getTool().setColor("blue");
 				graphicsContext.setStroke(Color.BLUE);
 			}
@@ -130,6 +133,7 @@ public class JavaFXApplication1 extends Application {
 		red.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event){
+				if(currentMode.getState().equals("lifting")) return;
 				currentMode.getTool().setColor("red");
 				graphicsContext.setStroke(Color.RED);
 			}
@@ -177,6 +181,7 @@ public class JavaFXApplication1 extends Application {
 						if (eraser.isSelected()) {
 							graphicsContext.clearRect(event.getX(), event.getY(), 30, 30);
 						} else {
+							currentMode.setState("");
 							graphicsContext.lineTo(event.getX(), event.getY());
 							graphicsContext.stroke();
 							Bounds b = workSpace.boundsInLocalProperty().getValue();
@@ -196,6 +201,7 @@ public class JavaFXApplication1 extends Application {
 					public void handle(MouseEvent event) {
 						if(!eraser.isSelected()){
 							currentMode.addPoint(event.getX(), event.getY(), 1);
+							currentMode.setState("lifting");
 						}
 					}
 				});
