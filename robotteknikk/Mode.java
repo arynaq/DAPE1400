@@ -21,7 +21,7 @@ public abstract class Mode {
 	private Data data;
 	private TCPController tcp;
 	private float xMaxCanvas = 800;
-	private float xMaxRobot = 300;
+	private float xMaxRobot = 200;
 	private float yMaxCanvas = 800;
 	private float yMaxRobot = 220;
 
