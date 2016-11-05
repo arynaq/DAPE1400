@@ -261,7 +261,7 @@ public class JavaFXApplication1 extends Application {
 				tcp = new ImmediateTCPController(hostname, port);
 				tcp.setContainer((ImmediateMode) currentMode);
 				tcp.connect();
-				tcp.startSendingPeriodic(500);
+				tcp.startSendingPeriodic(100);
 			}
 		});
 

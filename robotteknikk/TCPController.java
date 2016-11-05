@@ -28,7 +28,7 @@ public class TCPController{
 	 * The maximum number of datapoints we can send. The ABB robot is limited to a buffer of 1024 bytes
 	 *
 	 * */
-	private int maxDataSize = 5;
+	private int maxDataSize = 80;
 	private int port;
 	private int callCount = 0;
 
