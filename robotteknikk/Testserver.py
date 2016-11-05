@@ -1,4 +1,5 @@
 from twisted.internet import protocol, reactor, endpoints
+import time
 
 
 class TCPTestServer(protocol.Protocol):
@@ -9,6 +10,11 @@ class TCPTestServer(protocol.Protocol):
     def dataReceived(self, data):
         print "Received data:"
         print data;
+        self.transport.write("Random\n")
+        time.sleep(1)
+        self.transport.write("kek\n")
+        time.sleep(1)
+        self.transport.write("ok\n")
 
     def connectionMade(self):
         print "Connection made..."

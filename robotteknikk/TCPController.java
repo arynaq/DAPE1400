@@ -32,6 +32,7 @@ public class TCPController{
 	private int maxDataSize = 80;
 	private int port;
 	private int callCount = 0;
+	private String confirmMsg = "ok";
 
 	private String hostname;
 	private Socket socket;
@@ -41,7 +42,7 @@ public class TCPController{
 	 * in reads from server
 	 * out writes to server
 	 * */
-	private DataInputStream in;
+	private BufferedReader in;
 	private PrintWriter out;
 
 	private boolean connected;
@@ -77,7 +78,7 @@ public class TCPController{
 		try {
 			socket = new Socket(hostname, port);
 			out = new PrintWriter(socket.getOutputStream());
-			in = new DataInputStream(socket.getInputStream());
+			in = new BufferedReader(new InputStreamReader((socket.getInputStream())));
 			socket.setTcpNoDelay(true);
 			connected = true;
 		}catch(IOException e){
@@ -112,6 +113,20 @@ public class TCPController{
 	}
 
 
+	private void waitforOK(){
+
+		String ret = null;
+		System.out.println("Waiting for ok confirmation...");
+
+		try{
+			while((ret = in.readLine()) != null && !(ret.contains(confirmMsg))) {
+				System.out.println("Received: " + ret);
+			}
+		}catch(Exception e) {
+			System.out.println("Exception occured in readLine");
+		}
+
+	}
 
 
 	/**
@@ -146,10 +161,13 @@ public class TCPController{
 			System.out.println("[" + new Date().toString() + "]"+"Sent: ");
 			System.out.println(packetAsJSON);
 
-			try {
-				Thread.sleep(2000);
-			}catch(Exception e){
-			}
+			waitforOK();
+			/**
+			  try {
+			  Thread.sleep(2000);
+			  }catch(Exception e){
+			  }
+			 **/
 			writeToSocket(state,tool, new Data(remainder));
 		}
 
@@ -165,6 +183,8 @@ public class TCPController{
 
 			System.out.println("[" + new Date().toString() + "]"+"Sent: ");
 			System.out.println(packetAsJSON);
+
+			waitforOK();
 		}
 
 
