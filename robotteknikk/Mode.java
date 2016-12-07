@@ -20,6 +20,13 @@ public abstract class Mode {
 	private Tool tool;
 	private Data data;
 	private TCPController tcp;
+	private float xMaxCanvas = 800;
+	private float xMaxRobot = 200;
+	private float yMaxCanvas = 800;
+	private float yMaxRobot = 220;
+
+	private float xScale = xMaxRobot/xMaxCanvas;
+	private float yScale = yMaxRobot/yMaxCanvas;
 
 	public Mode(String state, Tool tool, Data data, TCPController tcp){
 		this.state = state;
@@ -29,11 +36,17 @@ public abstract class Mode {
 	}
 
 	public void addPoint(double x, double y){
-		this.data.addPoint(x,y);
+		int scaledX = (int)(x * xScale);
+		int scaledY = (int)(y * yScale); 
+		
+		this.data.addPoint(scaledX,scaledY);
 	}
 
 	public void addPoint(double x, double y, double z) {
-		this.data.addPoint(x,y,z);
+		int scaledX = (int)(x * xScale);
+		int scaledY = (int)(y * yScale); 
+		
+		this.data.addPoint(scaledX,scaledY, z);
 	}
 
 	public void sendTCP(){
@@ -42,6 +55,10 @@ public abstract class Mode {
 
 	public String getState(){
 		return state;
+	}
+
+	public void setState(String state){
+		this.state = state;
 	}
 
 	public void setTool(Tool tool){

@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.net.*;
 import java.io.*;
+import java.util.Date;
 
 
 /**
@@ -31,6 +32,7 @@ public class TCPController{
 	private int maxDataSize = 80;
 	private int port;
 	private int callCount = 0;
+	private String confirmMsg = "ok";
 
 	private String hostname;
 	private Socket socket;
@@ -40,7 +42,7 @@ public class TCPController{
 	 * in reads from server
 	 * out writes to server
 	 * */
-	private DataInputStream in;
+	private BufferedReader in;
 	private PrintWriter out;
 
 	private boolean connected;
@@ -76,7 +78,7 @@ public class TCPController{
 		try {
 			socket = new Socket(hostname, port);
 			out = new PrintWriter(socket.getOutputStream());
-			in = new DataInputStream(socket.getInputStream());
+			in = new BufferedReader(new InputStreamReader((socket.getInputStream())));
 			socket.setTcpNoDelay(true);
 			connected = true;
 		}catch(IOException e){
@@ -111,6 +113,25 @@ public class TCPController{
 	}
 
 
+	private void waitforOK(){
+
+		char[] buff = new char[100];
+		System.out.println("Waiting for ok confirmation...");
+
+		try{
+			while(in.read(buff,0,100) != -1) {
+					String ret = new String(buff);
+					System.out.println("Received: " + ret);
+					if(ret.contains(confirmMsg)) break;   
+			}
+			
+		}catch(Exception e) {
+			System.out.println("Exception occured in readLine");
+		}
+
+	}
+
+
 	/**
 	 * This method will recursively attempt to send the whole contents of the
 	 * given list of datapoints in chunks of at most maxDataSize
@@ -140,13 +161,16 @@ public class TCPController{
 
 			out.println(packetAsJSON);
 			out.flush();
-			System.out.println("Sent: ");
+			System.out.println("[" + new Date().toString() + "]"+"Sent: ");
 			System.out.println(packetAsJSON);
 
-			try {
-				Thread.sleep(2000);
-			}catch(Exception e){
-			}
+			waitforOK();
+			/**
+			  try {
+			  Thread.sleep(2000);
+			  }catch(Exception e){
+			  }
+			 **/
 			writeToSocket(state,tool, new Data(remainder));
 		}
 
@@ -160,8 +184,10 @@ public class TCPController{
 			out.println(packetAsJSON);
 			out.flush();
 
-			System.out.println("Sent: ");
+			System.out.println("[" + new Date().toString() + "]"+"Sent: ");
 			System.out.println(packetAsJSON);
+
+			waitforOK();
 		}
 
 

@@ -177,6 +177,7 @@ public class JavaFXApplication1 extends Application {
 						if (eraser.isSelected()) {
 							graphicsContext.clearRect(event.getX(), event.getY(), 30, 30);
 						} else {
+							currentMode.setState("");
 							graphicsContext.lineTo(event.getX(), event.getY());
 							graphicsContext.stroke();
 							Bounds b = workSpace.boundsInLocalProperty().getValue();
@@ -196,6 +197,7 @@ public class JavaFXApplication1 extends Application {
 					public void handle(MouseEvent event) {
 						if(!eraser.isSelected()){
 							currentMode.addPoint(event.getX(), event.getY(), 1);
+							currentMode.setState("lifting");
 						}
 					}
 				});
@@ -228,7 +230,7 @@ public class JavaFXApplication1 extends Application {
 
 
 		//ip toolbar bottom
-		TextField ipField = new TextField("localhost:27000");
+		TextField ipField = new TextField("192.168.125.1:27000");
 		Label ipText = new Label("   Enter IP adress:");
 		Button connect = new Button("Connect");
 		ToolBar ipBar = new ToolBar();
@@ -261,7 +263,7 @@ public class JavaFXApplication1 extends Application {
 				tcp = new ImmediateTCPController(hostname, port);
 				tcp.setContainer((ImmediateMode) currentMode);
 				tcp.connect();
-				tcp.startSendingPeriodic(500);
+				tcp.startSendingPeriodic(100);
 			}
 		});
 

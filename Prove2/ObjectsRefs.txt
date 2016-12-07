@@ -1,0 +1,37 @@
+int i = 5;
+
+	Klasse: Nope
+	Object: Nope
+	Reference: Nope (primitive)
+	Variabel: Bingo, i er en variabel
+	Verdi: Bingo, 5 er en verdi
+
+
+String str = new String("hello");
+
+	Klasse: String
+	Object: new String();
+	Reference: new String() and str (new String() creates an object, returns a reference to it, this reference is saved in the reference str)
+	Variabel: str
+	Verdi: String objects
+
+MinKlasse k = new MinKlasse();
+
+	Klasse: MinKlasse
+	Object: new MinKlasse();
+	Reference: The one pointing ot new MinKlasse() and k
+	Variabel: k
+	Verdi: new MinKlasse()
+
+
+MinKlasse k2 = k;
+
+	Klasse: MinKlasse
+	Object: none
+	Reference: k og k2
+	Variabel: k og k2
+	Verdi: none
+
+(3)
+
+	
