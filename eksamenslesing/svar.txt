@@ -29,9 +29,14 @@ Oppgave b
         - A parentobject does not need to know whether the nodes that are its branches or leafs are branches or leafs. 
         - Dette gjør det kjempelett å legge til objekter i scenegraphen og 
         - This is bullshiet.
-		- 
+		
 
+			HBox hbox = new HBox(8);
+			hbox.getChildren().addAll(new Label("Hello"), new TextBox());
+			root.getChildren().addAll(hbox);
 
+			Dette er quite genius, ser at HBoxen som er en node er også en container (Parent) og har derfor en addAll metode som tar noder
+			inkludert andre Hboxes.
 
 
 sdasd
@@ -77,21 +82,40 @@ Scene: (displays every tree)
 
    The JavaFX Scene class is the container for all content in a scene graph.
 
+
+
 Stage: 
+
+	- The JavaFX Stage class is the top level JavaFX container. The primary Stage is constructed by the platform. Additional Stage objects may be constructed by the application.
+ 	- Stage objects must be constructed and modified on the JavaFX Application Thread. 
+	- Many of the Stage properties are read only because they can be changed externally by the underlying platform and therefire must not be bindable. 
+
+
 
 Application: 
 
+	- Base class from which JavaFX applications must extend.
+	- Lifecycle:
+		1) Constructs an instance of the specified Application class
+		2) Calls the init() method
+		3) Calls the start(Stage) method
+		4) Waits for the application to finish (quit or exit)
+		5) Calls the stop() method.
 
-Advantages of polymorphism and inheritance over baseline code
+	- Start method -> Abstract and must be overriden.
+	- init and stop have implementations that do nothing.
 
 
 
 
+2. Hvordan JavaFX representerer generelle vinduer med grafiske brukergrensesnitt. Inkluder beskrivelse av klassene Stage, Scene, Application.
 
 
-
- 
-asasdasdadsa
-
-
+	- JavaFX representerer genrelle vinduer med grafiske grensesnitt ved hjelp av en Scene, Stage og application. Scene er klassen som inneholder 
+	all innhold i scene-graphen (set av alle noder på treet som representerer GUIen), en scene initialiseres med dimensjoner og en rotnode til scene-graphen, denne rootnoden kan være en leaf eller branch som f.eks en pane.
+	
+	- Scene må igjen være enkapsulert i en Stage, som er en toplevel container i JavaFX, via Stage sin setScene(..) metode. 
+	- Stage har også en show metode som gjør alt KLART for visning. 
+	- Application har en statisk metode launch(..) som etterhvert gjør at Application sin start kalles med en Stage som lages default
+	- fra platformen.
 
