@@ -1,0 +1,97 @@
+Advantages of polymorphism over baseline boring ass code in GUI programmering
+
+	- Like asking why you would want to drive to from canada to mexico instead of walking...
+
+
+    - GUI code/objects share A LOT of common functionality (or underlying functionality). Suppose every class was responsible for drawing itself and suppose this was to be implemented from scracth in every class/object.
+
+    - Worst case scenario C style functions have to be used to manage drawing with a global context for rendering logic (...)
+
+    - Polymorphism / Inheritance allows for gathering all common logic for rendering and updates in a base class such that new GUI elements (or all GUI elements) can only worry about their specific requirements.
+
+
+       Suppose that we didn't have inheritance. Creating a triangle would share nothing in common with creating a square. But with inheritance a square could inherit from a concrete or abstract class polygon and so could a trinagle, the only difference would be the points required to construct a trinagle vs square. 
+
+       The same holds true for rendering. Suppose by some magic we have access to the hw renderer via a function or an object, rendering a triangle would again not have much in common with rendering a square. But with inheritance a base class (Renderable) could be created through an interface exposing a Render for all containers.
+
+
+	   This also has the advantage that javafx has. Node classes that are leafs dont need to worry about how they are aligned, they know that their container (Parent) can gurantee their layout. 
+       The same can also be said of Parent classes, they know that they are not the root, so they dont need to worry about the render loop timings, the bound calculations of their container etc. 
+
+
+
+Oppgave b
+
+	Why java needs polymorphism to represent the scene graph
+			
+
+		- An object must be able to be 2 things at the same time. A node can be a parent or a leaf.
+        - A parentobject does not need to know whether the nodes that are its branches or leafs are branches or leafs. 
+        - Dette gjør det kjempelett å legge til objekter i scenegraphen og 
+        - This is bullshiet.
+		- 
+
+
+
+
+sdasd
+n -> Node
+
+Flowpane -> Pane -> Region -> Parent -> Node
+
+
+
+Node:
+
+   Base class for scene graph nodes. A scene graph is a set of tree data structures where every item has zero or one parent.
+   Each item is either a "leaf" with zero sub.items or a "branch" with zero or more sub-items. 
+
+
+   Each item in the scene graph is called a Node. Branch nodes are of type parent, (can contain 0 or more sub-items).
+   Parent has concrete subclasses Group, Region, Control and subclassess of these. 
+
+
+   Leaf nodes are classes such as Rectangle, Text, cannot have children. Only a single node within each scene graph will have no parent, which is referred
+   to as the root node. 
+
+   There may be several trees in the scene graph. Some trees may be part of a Scene, in which case they are eligbable to
+   be displayed. Other trees might not be part of any Scene.
+
+   A node may occur at most once anywhere in the scene graph. Specifically, a node must appear no more than once in all of the following: as the root node of a Scene
+   , the children ObservableList of a Parent, or as the clip of a Node.
+
+   The scene graph must not have any cycles. A cycle would exist if there is a circular dependancy somewhere. A node can at most have one parent.
+
+   If it is added to a different parent it is silently removed from the other parent. 
+
+
+
+
+Parent: (branch, container, 0 or n sub items)
+
+   Base class for all nodes that have children in the scenegraph. Handles hierarchical scene graph operations. Add/Remove.
+   Refreshing. Dirty layout & rendering, pickings, bounds calculation and execution the layout pass on each pulse.
+
+
+Scene: (displays every tree)
+
+   The JavaFX Scene class is the container for all content in a scene graph.
+
+Stage: 
+
+Application: 
+
+
+Advantages of polymorphism and inheritance over baseline code
+
+
+
+
+
+
+
+ 
+asasdasdadsa
+
+
+
